@@ -31,6 +31,9 @@
     text-align: center;
     border-bottom: 2px solid #ffcc00;
     position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
   }
 
   header img {
@@ -65,14 +68,12 @@
   /* Hamburger button */
   .menu-toggle {
     display: none;
-    position: absolute;
-    top: 25px;
-    right: 25px;
     background: none;
     border: none;
     color: #ffcc00;
     font-size: 28px;
     cursor: pointer;
+    margin-top: 10px;
   }
 
   section {
@@ -156,14 +157,13 @@
   /* --- Responsive adjustments --- */
   @media (max-width: 600px) {
     header img {
-      max-width: 600px; /* 1.5x larger than original */
+      max-width: 400px; /* doubled logo for mobile */
     }
 
     .menu-toggle {
       display: block;
     }
 
-    /* Hide the menu by default on mobile */
     nav {
       display: none;
       flex-direction: column;
@@ -171,12 +171,12 @@
       background-color: rgba(17, 17, 17, 0.95);
       border-top: 1px solid #ffcc00;
       width: 100%;
-      margin-top: 10px; /* keeps slight breathing space below logo */
+      margin-top: 10px; /* spacing between logo and dropdown */
       padding: 0;
     }
 
     nav.active {
-      display: flex; /* menu drops below logo naturally */
+      display: flex;
       animation: slideDown 0.3s ease;
     }
 
@@ -214,11 +214,7 @@
 
   <header>
     <img src="./img/logo.png" alt="Chasing Embers Logo" />
-   
-  </header>
-
- <section id="nav-home">
-   <button class="menu-toggle" aria-label="Toggle menu">☰</button>
+    <button class="menu-toggle" aria-label="Toggle menu">☰</button>
     <nav>
       <a href="#home">Home</a>
       <a href="#shows">Shows</a>
@@ -226,10 +222,9 @@
       <a href="#media">Media</a>
       <a href="#presskit">Press Kit</a>
     </nav>
-  </section>
+  </header>
 
   <section id="home">
-
     <h2>Welcome to Chasing Embers</h2>
     <p>
       Chasing Embers is a two-piece mostly acoustic duo, playing a mix of modern pop and mellow rock.
@@ -293,8 +288,19 @@
     // Mobile menu toggle
     const menuToggle = document.querySelector('.menu-toggle');
     const nav = document.querySelector('nav');
+    const navLinks = document.querySelectorAll('nav a');
+
     menuToggle.addEventListener('click', () => {
       nav.classList.toggle('active');
+    });
+
+    // Auto close menu after clicking a link (mobile only)
+    navLinks.forEach(link => {
+      link.addEventListener('click', () => {
+        if (window.innerWidth <= 600) {
+          nav.classList.remove('active');
+        }
+      });
     });
 
     // Back to top button
