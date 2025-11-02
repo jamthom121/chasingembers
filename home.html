@@ -45,6 +45,7 @@
       justify-content: center;
       gap: 10px;
       margin-top: 10px;
+      transition: all 0.3s ease;
     }
 
     nav a {
@@ -155,7 +156,7 @@
     /* Responsive adjustments */
     @media (max-width: 600px) {
       header img {
-        max-width: 800px; /* double size for mobile */
+        max-width: 600px; /* 1.5x larger than original (400px) */
       }
 
       .menu-toggle {
@@ -169,6 +170,7 @@
         background-color: rgba(17, 17, 17, 0.95);
         border-top: 1px solid #ffcc00;
         padding: 10px 0;
+        margin-top: 50px; /* position 50px below logo */
       }
 
       nav a {
@@ -284,11 +286,7 @@
     // Back to top button
     const backToTopBtn = document.getElementById('backToTop');
     window.addEventListener('scroll', () => {
-      if (window.scrollY > 400) {
-        backToTopBtn.style.display = 'block';
-      } else {
-        backToTopBtn.style.display = 'none';
-      }
+      backToTopBtn.style.display = window.scrollY > 400 ? 'block' : 'none';
     });
 
     backToTopBtn.addEventListener('click', () => {
