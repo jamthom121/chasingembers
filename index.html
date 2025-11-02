@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Splash</title>
+  <style>
+    html, body {
+      height: 100%;
+      margin: 0;
+      background: black;
+      overflow: hidden;
+      font-family: system-ui, sans-serif;
+    }
+
+    /* Container for image and blur */
+    .splash {
+      position: relative;
+      width: 100%;
+      min-height: calc((100vh - 200px) * 1.5); /* 50% taller */
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: black;
+      overflow: hidden;
+    }
+
+    /* Blurred background image covering entire splash area */
+    .splash::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: url("./img/splash.png") center center no-repeat;
+      background-size: cover;
+      filter: blur(25px) brightness(0.7);
+      transform: scale(1.1);
+      z-index: 0;
+    }
+
+    /* Centered image with padding, now 20% smaller */
+    .splash img {
+      position: relative;
+      z-index: 1;
+      max-width: 48%;  /* 20% smaller than previous 60% */
+      max-height: 48%; /* 20% smaller than previous 60% */
+      border-radius: 6px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+      transition: transform 0.3s ease;
+    }
+
+    .splash img:hover {
+      transform: scale(1.02);
+    }
+
+    /* Clickable area for image */
+    .splash a {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      height: 100%;
+      text-decoration: none;
+    }
+
+    @media (max-width: 600px) {
+      .splash img {
+        max-width: 64%; /* scale down proportionally for mobile */
+        max-height: 56%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header></header>
+
+  <div class="splash">
+    <a href="home.html" aria-label="Enter home page">
+      <img src="./img/splash.png" alt="Enter site" />
+    </a>
+  </div>
+</body>
+</html>
