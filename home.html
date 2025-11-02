@@ -11,9 +11,9 @@
       background: url('./img/background.png') no-repeat center center fixed;
       background-size: cover;
       color: #fff;
+      scroll-behavior: smooth;
     }
 
-    /* Dark overlay for readability */
     body::before {
       content: "";
       position: fixed;
@@ -30,11 +30,13 @@
       padding: 20px;
       text-align: center;
       border-bottom: 2px solid #ffcc00;
+      position: relative;
     }
 
     header img {
       max-width: 400px;
       height: auto;
+      transition: max-width 0.3s ease;
     }
 
     nav {
@@ -57,6 +59,19 @@
     nav a:hover {
       background-color: #ffcc00;
       color: #000;
+    }
+
+    /* Hamburger button */
+    .menu-toggle {
+      display: none;
+      position: absolute;
+      top: 25px;
+      right: 25px;
+      background: none;
+      border: none;
+      color: #ffcc00;
+      font-size: 28px;
+      cursor: pointer;
     }
 
     section {
@@ -111,47 +126,88 @@
       padding: 15px;
       border-top: 1px solid #ffcc00;
       font-size: 0.9em;
+      position: relative;
+    }
+
+    /* Back to Top button */
+    #backToTop {
+      display: none;
+      position: fixed;
+      bottom: 25px;
+      right: 25px;
+      background-color: #ffcc00;
+      color: #000;
+      border: none;
+      padding: 12px 16px;
+      border-radius: 50px;
+      font-weight: bold;
+      cursor: pointer;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+      transition: background 0.3s ease;
+      z-index: 10;
+    }
+
+    #backToTop:hover {
+      background-color: #fff;
+      color: #000;
     }
 
     /* Responsive adjustments */
     @media (max-width: 600px) {
+      header img {
+        max-width: 800px; /* double size for mobile */
+      }
+
+      .menu-toggle {
+        display: block;
+      }
+
+      nav {
+        display: none;
+        flex-direction: column;
+        align-items: center;
+        background-color: rgba(17, 17, 17, 0.95);
+        border-top: 1px solid #ffcc00;
+        padding: 10px 0;
+      }
+
       nav a {
         display: block;
         width: 100%;
-        text-align: center;
+        padding: 10px;
       }
-      iframe {
-        height: 200px;
-      }
-      header img {
-        max-width: 140px;
+
+      nav.active {
+        display: flex;
       }
     }
 
-  #media ul {
-    list-style-type: none;
-    padding-left: 0;
-  }
+    #media ul {
+      list-style-type: none;
+      padding-left: 0;
+    }
 
-  #media li {
-    margin-bottom: 0.5em;
-  }
+    #media li {
+      margin-bottom: 0.5em;
+    }
 
-  .artist {
-    color: #f39c12; /* example: a fire-yellow/orange color */
-    font-weight: 500;
-  }
-</style>
-  <!-- Font Awesome for social icons -->
+    .artist {
+      color: #f39c12;
+      font-weight: 500;
+    }
+  </style>
+
   <script src="https://kit.fontawesome.com/a2d04a1b6f.js" crossorigin="anonymous"></script>
 </head>
 <body>
+
   <header>
     <img src="./img/logo.png" alt="Chasing Embers Logo" />
+    <button class="menu-toggle" aria-label="Toggle menu">☰</button>
     <nav>
       <a href="#home">Home</a>
       <a href="#shows">Shows</a>
-      <a href="#shows">Songs</a>
+      <a href="#songs">Songs</a>
       <a href="#media">Media</a>
       <a href="#presskit">Press Kit</a>
     </nav>
@@ -159,7 +215,12 @@
 
   <section id="home">
     <h2>Welcome to Chasing Embers</h2>
-    <p>Chasing Embers is a two-piece mostly acoustic duo, playing a mix of modern pop and mellow rock. Stephanie leads with her expressive vocals, while Jason provides piano and guitar, along with a few backing tracks created in his home studio. Together, we aim to create enjoyable, memorable performances for both public venues and private events. Contact information is below — we hope to see you at a show soon!<p>
+    <p>
+      Chasing Embers is a two-piece mostly acoustic duo, playing a mix of modern pop and mellow rock.
+      Stephanie leads with her expressive vocals, while Jason provides piano and guitar, along with a few
+      backing tracks created in his home studio. Together, we aim to create enjoyable, memorable performances
+      for both public venues and private events.
+    </p>
 
     <div class="socials">
       <a href="#"><i class="fab fa-facebook"></i></a>
@@ -171,51 +232,69 @@
 
   <section id="shows">
     <h2>Upcoming Shows</h2>
-    <p>🔥 Booking shows now. More info soon! 🔥
+    <p>🔥 Booking shows now. More info soon! 🔥</p>
   </section>
 
-<section id="songs">
-  <h2>Songs We Cover (Partial List)</h2>
-  <p>Here are some of the artists and songs we cover:</p>
-    <br/>The Underground <span class="artist">by </span>Meg Myes</span>
-    <br/>Love Song <span class="artist">by </span>Adele</span>
-    <br/>Passionfruit <span class="artist">by </span>Drake/Paramore</span>
-    <br/>My Future <span class="artist">by </span>Billie Eilish</span>
-    <br/>Heaven <span class="artist">by </span>Alex Goot</span>
-    <br/>TV <span class="artist">by </span>Billie Eilish</span>
-    <br/>Your Song <span class="artist">by </span>Ellie Goulding</span>
-    <br/>Turning Tables <span class="artist">by </span>Adele</span>
-    <br/>Zombie <span class="artist">by </span>The Cranberries</span>
-    <br/>Killing Me Softly <span class="artist">by </span>The Fugees/Flack</span>
-    <br/>Rolling in the Deep <span class="artist">by </span>Adele</span>
-    <br/>Make You Feel My Love <span class="artist">by </span>Adele</span>
-    <br/>Shallow <span class="artist">by </span>Lady Gaga</span>
-    <br/>Say You Won't Let Go <span class="artist">by </span>James Arthur</span>
-    <br/>I Won't Back Down <span class="artist">by </span>Tom Petty</span>
-    <br/>Creep <span class="artist">by </span>Radiohead</span>
-    <br/>Norwegian Wood <span class="artist">by </span>The Beatles</span>
+  <section id="songs">
+    <h2>Songs We Cover (Partial List)</h2>
+    <p>Here are some of the artists and songs we cover:</p>
+    <br/>The Underground <span class="artist">by Meg Myers</span>
+    <br/>Love Song <span class="artist">by Adele</span>
+    <br/>Passionfruit <span class="artist">by Drake / Paramore</span>
+    <br/>My Future <span class="artist">by Billie Eilish</span>
+    <br/>Heaven <span class="artist">by Alex Goot</span>
+    <br/>TV <span class="artist">by Billie Eilish</span>
+    <br/>Your Song <span class="artist">by Ellie Goulding</span>
+    <br/>Turning Tables <span class="artist">by Adele</span>
+    <br/>Zombie <span class="artist">by The Cranberries</span>
+    <br/>Killing Me Softly <span class="artist">by The Fugees / Roberta Flack</span>
+    <br/>Rolling in the Deep <span class="artist">by Adele</span>
+    <br/>Make You Feel My Love <span class="artist">by Adele</span>
+    <br/>Shallow <span class="artist">by Lady Gaga</span>
+    <br/>Say You Won't Let Go <span class="artist">by James Arthur</span>
+    <br/>I Won't Back Down <span class="artist">by Tom Petty</span>
+    <br/>Creep <span class="artist">by Radiohead</span>
+    <br/>Norwegian Wood <span class="artist">by The Beatles</span>
+  </section>
 
-</section>
- 
-
-
-<section id="media">
-  <h2>Media</h2>
-  <p>We will post audio and video clips here soon!</p>
- 
-</section>
+  <section id="media">
+    <h2>Media</h2>
+    <p>We will post audio and video clips here soon!</p>
+  </section>
 
   <section id="presskit">
     <h2>Press Kit</h2>
-  <p>We will post a press kit and contact info here soon!</p>
-<!--
-   <p>Download our official press kit for booking and media inquiries.</p>
-    <a href="presskit.zip" style="color:#ffcc00; text-decoration:underline;">Download Press Kit</a>
+    <p>We will post a press kit and contact info here soon!</p>
   </section>
--->
 
   <footer>
     <p>© 2025 Chasing Embers | Follow us on social media for updates</p>
   </footer>
+
+  <button id="backToTop" title="Back to Top">↑</button>
+
+  <script>
+    // Mobile menu toggle
+    const menuToggle = document.querySelector('.menu-toggle');
+    const nav = document.querySelector('nav');
+    menuToggle.addEventListener('click', () => {
+      nav.classList.toggle('active');
+    });
+
+    // Back to top button
+    const backToTopBtn = document.getElementById('backToTop');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 400) {
+        backToTopBtn.style.display = 'block';
+      } else {
+        backToTopBtn.style.display = 'none';
+      }
+    });
+
+    backToTopBtn.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  </script>
+
 </body>
 </html>
