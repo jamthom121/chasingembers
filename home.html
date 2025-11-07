@@ -1,4 +1,4 @@
-<!-- home.html version 20251107 1510 -->
+<!-- home.html version 20251107 1510 - updated for YouTube stop on new video -->
 
 <!DOCTYPE html>
 <html lang="en">
@@ -7,6 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Chasing Embers</title>
   <style>
+  /* --- all your existing styles --- */
   body {
     margin: 0;
     font-family: 'Arial', sans-serif;
@@ -67,7 +68,6 @@
     color: #000;
   }
 
-  /* Hamburger button */
   .menu-toggle {
     display: none;
     background: none;
@@ -133,7 +133,6 @@
     position: relative;
   }
 
-  /* Back to Top button */
   #backToTop {
     display: none;
     position: fixed;
@@ -156,10 +155,9 @@
     color: #000;
   }
 
-  /* --- Responsive adjustments --- */
   @media (max-width: 600px) {
     header img {
-      max-width: 400px; /* doubled logo for mobile */
+      max-width: 400px;
     }
 
     .menu-toggle {
@@ -173,7 +171,7 @@
       background-color: rgba(17, 17, 17, 0.95);
       border-top: 1px solid #ffcc00;
       width: 100%;
-      margin-top: 10px; /* spacing between logo and dropdown */
+      margin-top: 10px;
       padding: 0;
     }
 
@@ -210,13 +208,13 @@
   }
 
 .video-box {
-  border: 1px solid #FFD700; /* golden border */
+  border: 1px solid #FFD700;
   padding: 5px;
-  margin: 5px auto; /* center horizontally */
-  background-color: #111; /* dark background */
+  margin: 5px auto;
+  background-color: #111;
   color: #fff;
   max-width: 600px;
-  text-align: center; /* optional, centers content inside */
+  text-align: center;
 }
 .video-box h3 {
   margin: 0 0 5px;
@@ -294,21 +292,18 @@
 <section id="media">
   <h2>Media</h2>
   <p>Here are some clips from the studio. Enjoy!</p>
+
   <div class="video-box">
-    <iframe width="560" height="315" 
-      src="https://www.youtube.com/embed/c84Ab3p_AJg?start=5&rel=0&modestbranding=1" 
-      title="YouTube video player" frameborder="0" 
-      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
-      referrerpolicy="strict-origin-when-cross-origin" allowfullscreen>
+    <iframe id="video1" width="560" height="315"
+      src="https://www.youtube.com/embed/c84Ab3p_AJg?enablejsapi=1&start=5&rel=0&modestbranding=1"
+      title="YouTube video player" frameborder="0" allowfullscreen>
     </iframe>
   </div>
 
   <div class="video-box">
-    <iframe width="560" height="315" 
-      src="https://www.youtube.com/embed/7runIsg_j7c?rel=0&modestbranding=1" 
-      title="YouTube video player" frameborder="0" 
-      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
-      referrerpolicy="strict-origin-when-cross-origin" allowfullscreen>
+    <iframe id="video2" width="560" height="315"
+      src="https://www.youtube.com/embed/7runIsg_j7c?enablejsapi=1&rel=0&modestbranding=1"
+      title="YouTube video player" frameborder="0" allowfullscreen>
     </iframe>
   </div>
 
@@ -324,6 +319,7 @@
 
   <button id="backToTop" title="Back to Top">↑</button>
 
+  <!-- --- existing scripts --- -->
   <script>
     // Mobile menu toggle
     const menuToggle = document.querySelector('.menu-toggle');
@@ -352,6 +348,31 @@
     backToTopBtn.addEventListener('click', () => {
       window.scrollTo({ top: 0, behavior: 'smooth' });
     });
+  </script>
+
+  <!-- --- YouTube IFrame API for stopping other videos --- -->
+  <script src="https://www.youtube.com/iframe_api"></script>
+  <script>
+    let players = {};
+
+    function onYouTubeIframeAPIReady() {
+      players.video1 = new YT.Player('video1', {
+        events: { 'onStateChange': onPlayerStateChange }
+      });
+      players.video2 = new YT.Player('video2', {
+        events: { 'onStateChange': onPlayerStateChange }
+      });
+    }
+
+    function onPlayerStateChange(event) {
+      if (event.data === YT.PlayerState.PLAYING) {
+        for (const key in players) {
+          if (players[key] !== event.target) {
+            players[key].pauseVideo();
+          }
+        }
+      }
+    }
   </script>
 
 </body>
