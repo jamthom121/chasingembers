@@ -1,294 +1,421 @@
-<!-- home.html version 20251107 1531 - updated for YouTube stop on new video -->
-
+<!-- home.html version 20251108 updated -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Chasing Embers</title>
-    <link rel="icon" type="image/png" href="./img/favicon.png">
+  <link rel="icon" type="image/png" href="./img/favicon.png">
   <style>
-  /* --- all your existing styles --- */
-  body {
-    margin: 0;
-    font-family: 'Arial', sans-serif;
-    background: url('./img/background.png') no-repeat center center fixed;
-    background-size: cover;
-    color: #fff;
-    scroll-behavior: smooth;
-  }
-
-  body::before {
-    content: "";
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0, 0, 0, 0.6);
-    z-index: -1;
-  }
-
-  header {
-    background-color: rgba(17, 17, 17, 0.85);
-    padding: 20px;
-    text-align: center;
-    border-bottom: 2px solid #ffcc00;
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-
-  header img {
-    max-width: 400px;
-    height: auto;
-    transition: max-width 0.3s ease;
-  }
-
-  nav {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 10px;
-    margin-top: 10px;
-    transition: all 0.3s ease;
-  }
-
-  nav a {
-    color: #ffcc00;
-    text-decoration: none;
-    font-weight: bold;
-    padding: 8px 12px;
-    transition: background 0.3s ease, color 0.3s ease;
-    border-radius: 4px;
-  }
-
-  nav a:hover {
-    background-color: #ffcc00;
-    color: #000;
-  }
-
-  .menu-toggle {
-    display: none;
-    background: none;
-    border: none;
-    color: #ffcc00;
-    font-size: 28px;
-    cursor: pointer;
-    margin-top: 10px;
-  }
-
-  section {
-    padding: 60px 20px;
-    text-align: center;
-    max-width: 800px;
-    margin: auto;
-    background: rgba(0, 0, 0, 0.5);
-    border-radius: 8px;
-  }
-
-  h2 {
-    color: #ffcc00;
-    margin-bottom: 20px;
-  }
-
-  p {
-    line-height: 1.6;
-  }
-
-  iframe {
-    width: 100%;
-    height: 315px;
-    max-width: 560px;
-    border: none;
-    margin-top: 20px;
-    border-radius: 8px;
-  }
-
-  .socials {
-    display: flex;
-    justify-content: center;
-    gap: 15px;
-    margin-top: 20px;
-  }
-
-  .socials a {
-    color: #ffcc00;
-    font-size: 24px;
-    text-decoration: none;
-    transition: color 0.3s;
-  }
-
-  .socials a:hover {
-    color: #fff;
-  }
-
-  footer {
-    background-color: rgba(17, 17, 17, 0.85);
-    color: #999;
-    text-align: center;
-    padding: 15px;
-    border-top: 1px solid #ffcc00;
-    font-size: 0.9em;
-    position: relative;
-  }
-
-  #backToTop {
-    display: none;
-    position: fixed;
-    bottom: 25px;
-    right: 25px;
-    background-color: #ffcc00;
-    color: #000;
-    border: none;
-    padding: 12px 16px;
-    border-radius: 50px;
-    font-weight: bold;
-    cursor: pointer;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.3);
-    transition: background 0.3s ease;
-    z-index: 10;
-  }
-
-  #backToTop:hover {
-    background-color: #fff;
-    color: #000;
-  }
-
-  @media (max-width: 600px) {
-    header img {
-      max-width: 400px;
+    body {
+      margin: 0;
+      font-family: 'Arial', sans-serif;
+      background: url('./img/background.png') no-repeat center center fixed;
+      background-size: cover;
+      color: #fff;
+      scroll-behavior: smooth;
+    }
+    body::before {
+      content: "";
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.6);
+      z-index: -1;
     }
 
-    .menu-toggle {
-      display: block;
+    header {
+      background-color: rgba(17, 17, 17, 0.85);
+      padding: 20px;
+      text-align: center;
+      border-bottom: 2px solid #ffcc00;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    header img {
+      max-width: 400px;
+      height: auto;
+      transition: max-width 0.3s ease;
     }
 
     nav {
-      display: none;
-      flex-direction: column;
-      align-items: center;
-      background-color: rgba(17, 17, 17, 0.95);
-      border-top: 1px solid #ffcc00;
-      width: 100%;
-      margin-top: 10px;
-      padding: 0;
-    }
-
-    nav.active {
       display: flex;
-      animation: slideDown 0.3s ease;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px;
+      margin-top: 10px;
+      transition: all 0.3s ease;
     }
 
-    @keyframes slideDown {
+    nav a {
+      color: #ffcc00;
+      text-decoration: none;
+      font-weight: bold;
+      padding: 8px 12px;
+      transition: background 0.3s ease, color 0.3s ease;
+      border-radius: 4px;
+    }
+
+    nav a:hover {
+      background-color: #ffcc00;
+      color: #000;
+    }
+
+    .menu-toggle {
+      display: none;
+      background: none;
+      border: none;
+      color: #ffcc00;
+      font-size: 28px;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+
+    section {
+      padding: 20px 20px;
+      text-align: center;
+      max-width: 800px;
+      margin: auto;
+      background: rgba(0, 0, 0, 0.5);
+      border-radius: 8px;
+    }
+
+    h2 {
+      color: #ffcc00;
+      margin-bottom: 20px;
+    }
+
+    p {
+      line-height: 1.6;
+    }
+
+    iframe {
+      width: 100%;
+      height: 315px;
+      max-width: 560px;
+      border: none;
+      margin-top: 20px;
+      border-radius: 8px;
+    }
+
+    footer {
+      background-color: rgba(17, 17, 17, 0.85);
+      color: #999;
+      text-align: center;
+      padding: 20px;
+      border-top: 1px solid #ffcc00;
+      font-size: 0.9em;
+      position: relative;
+    }
+
+    #backToTop {
+      display: none;
+      position: fixed;
+      bottom: 25px;
+      right: 25px;
+      background-color: #ffcc00;
+      color: #000;
+      border: none;
+      padding: 12px 16px;
+      border-radius: 50px;
+      font-weight: bold;
+      cursor: pointer;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+      transition: background 0.3s ease;
+      z-index: 10;
+    }
+
+    #backToTop:hover {
+      background-color: #fff;
+      color: #000;
+    }
+
+    @media (max-width: 600px) {
+      header img {
+        max-width: 400px;
+      }
+
+      .menu-toggle {
+        display: block;
+      }
+
+      nav {
+        display: none;
+        flex-direction: column;
+        align-items: center;
+        background-color: rgba(17, 17, 17, 0.95);
+        border-top: 1px solid #ffcc00;
+        width: 100%;
+        margin-top: 10px;
+        padding: 0;
+      }
+
+      nav.active {
+        display: flex;
+        animation: slideDown 0.3s ease;
+      }
+
+      @keyframes slideDown {
+        from { opacity: 0; transform: translateY(-10px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+
+      nav a {
+        display: block;
+        width: 100%;
+        padding: 10px;
+        text-align: center;
+      }
+    }
+
+    #media ul {
+      list-style-type: none;
+      padding-left: 0;
+    }
+
+    #media li {
+      margin-bottom: 0.5em;
+    }
+
+    .artist {
+      color: #f39c12;
+      font-weight: 500;
+    }
+
+    .video-box {
+      border: 1px solid #FFD700;
+      padding: 5px;
+      margin: 5px auto;
+      background-color: #111;
+      color: #fff;
+      max-width: 600px;
+      text-align: center;
+    }
+
+    .video-box h3 {
+      margin: 0 0 5px;
+      font-size: 1.2em;
+    }
+
+    .video-box p {
+      margin: 0 0 10px;
+      font-size: 1em;
+    }
+
+    /* === Socials Section === */
+    #socials {
+      text-align: center;
+      margin: 20px auto;   /* match other sections */
+      padding: 20px;       /* match other sections */
+      color: #fff;
+    }
+
+    #socials h2 {
+      color: #ffcc33; /* Fire yellow heading */
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .social-links {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    .social-links a {
+      display: inline-block;
+      transition: transform 0.2s ease, opacity 0.2s ease;
+    }
+
+    .social-links img {
+      width: 40px;
+      height: 40px;
+      filter: brightness(0) saturate(100%) invert(100%) sepia(9%) saturate(0%) hue-rotate(164deg) brightness(106%) contrast(101%);
+    }
+
+    .social-links a:hover img {
+      filter: invert(83%) sepia(73%) saturate(2052%) hue-rotate(2deg) brightness(104%) contrast(102%);
+      transform: scale(1.2);
+      opacity: 0.9;
+    }
+
+    /* Contact Button */
+    .contact-btn {
+      background-color: #ffcc00;
+      color: #000;
+      font-weight: bold;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 1.1em;
+      transition: background 0.3s ease, transform 0.2s ease;
+    }
+
+    .contact-btn:hover {
+      background-color: #fff;
+      transform: scale(1.05);
+    }
+
+    /* Modal overlay */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 20;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow-y: auto;
+      background-color: rgba(0, 0, 0, 0.85);
+      backdrop-filter: blur(4px);
+    }
+
+    /* Modal box */
+    .modal-content {
+      background-color: #111;
+      margin: 2% auto;
+      padding: 20px;
+      border: 2px solid #ffcc00;
+      border-radius: 10px;
+      width: 95%;
+      max-width: 800px;
+      color: #fff;
+      box-shadow: 0 0 20px rgba(255, 204, 0, 0.4);
+      animation: fadeIn 0.3s ease;
+      max-height: 95vh;
+      overflow-y: auto;
+    }
+
+    .modal-content h3 {
+      color: #ffcc00;
+      margin-bottom: 15px;
+    }
+
+    .close {
+      color: #ffcc00;
+      float: right;
+      font-size: 28px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: color 0.3s;
+    }
+
+    .close:hover {
+      color: #fff;
+    }
+
+    @keyframes fadeIn {
       from { opacity: 0; transform: translateY(-10px); }
       to { opacity: 1; transform: translateY(0); }
     }
 
-    nav a {
-      display: block;
-      width: 100%;
-      padding: 10px;
+    /* About Us Members Layout */
+    .about-members {
+      display: flex;
+      justify-content: center;
+      gap: 40px;
+      margin-top: 20px;
+      flex-wrap: wrap;
+    }
+
+    .member {
+      max-width: 250px;
       text-align: center;
     }
-  }
 
-  #media ul {
-    list-style-type: none;
-    padding-left: 0;
-  }
+    .member-photo {
+      width: 150px;
+      height: 150px;
+      object-fit: cover;
+      border-radius: 50%;
+      border: 3px solid #ffcc00;
+      margin-bottom: 10px;
+    }
 
-  #media li {
-    margin-bottom: 0.5em;
-  }
+    .member h3 {
+      color: #ffcc00;
+      margin-bottom: 8px;
+    }
 
-  .artist {
-    color: #f39c12;
-    font-weight: 500;
-  }
+    .member p {
+      font-size: 0.95em;
+      line-height: 1.4;
+    }
 
-.video-box {
-  border: 1px solid #FFD700;
-  padding: 5px;
-  margin: 5px auto;
-  background-color: #111;
-  color: #fff;
-  max-width: 600px;
-  text-align: center;
-}
-.video-box h3 {
-  margin: 0 0 5px;
-  font-size: 1.2em;
-}
-
-.video-box p {
-  margin: 0 0 10px;
-  font-size: 1em;
-}
-
-</style>
+  </style>
 
   <script src="https://kit.fontawesome.com/a2d04a1b6f.js" crossorigin="anonymous"></script>
 </head>
 <body>
 
-  <header>
-    <img src="./img/logo.png" alt="Chasing Embers Logo" />
-    <button class="menu-toggle" aria-label="Toggle menu">☰</button>
-    <nav>
-      <a href="#home">Home</a>
-      <a href="#shows">Shows</a>
-      <a href="#songs">Songs</a>
-      <a href="#media">Media</a>
-      <a href="#presskit">Press Kit</a>
-    </nav>
-  </header>
+<header>
+  <img src="./img/logo.png" alt="Chasing Embers Logo" />
+  <button class="menu-toggle" aria-label="Toggle menu">☰</button>
+  <nav>
+    <a href="#about">About Us</a>
+    <a href="#shows">Shows</a>
+    <a href="#songs">Songs</a>
+    <a href="#media">Media</a>
+    <a href="#presskit">Press Kit</a>
+    <a href="#contact">Contact Us</a>
+    <a href="#socials">Follow Us</a>
+  </nav>
+</header>
 
-  <section id="home">
-    <h2>Welcome to Chasing Embers</h2>
-    <p>
-      Chasing Embers is a two-piece mostly acoustic duo, playing a mix of modern pop and mellow rock.
-      Stephanie leads with her expressive vocals, while Jason provides piano and guitar, along with a few
-      backing tracks created in his home studio. Together, we aim to create enjoyable, memorable performances
-      for both public venues and private events.
-    </p>
+<section id="about">
+  <h2>About Us</h2>
+  <p>
+    Chasing Embers is a two-piece mostly acoustic duo, playing a mix of modern pop and mellow rock.
+    Together, we aim to create enjoyable, memorable performances for both public venues and private events.
+  </p>
 
-    <div class="socials">
-      <a href="#"><i class="fab fa-facebook"></i></a>
-      <a href="#"><i class="fab fa-instagram"></i></a>
-      <a href="#"><i class="fab fa-youtube"></i></a>
-      <a href="#"><i class="fab fa-spotify"></i></a>
+  <div class="about-members">
+    <div class="member">
+      <img src="img/steph1.jpg" alt="Stephanie" class="member-photo">
+      <h3>Stephanie</h3>
+      <p>Stephanie leads with her expressive vocals, bringing emotion and power to every performance.</p>
     </div>
-  </section>
+    <div class="member">
+      <img src="img/jason2.jpg" alt="Jason" class="member-photo">
+      <h3>Jason</h3>
+      <p>Jason provides piano and guitar accompaniment, along with backing tracks from his home studio, supporting the duo’s sound.</p>    </div>
+  </div>
+</section>
 
-  <section id="shows">
-    <h2>Upcoming Shows</h2>
-    <p>🔥 Booking shows now. More info soon! 🔥</p>
-  </section>
+<section id="shows">
+  <h2>Upcoming Shows</h2>
+  <p>🔥 Booking shows now. More info soon! 🔥</p>
+</section>
 
-  <section id="songs">
-    <h2>Songs</h2>
-    <p>Here are some of the artists and songs we cover:</p>
-    <br/>The Underground <span class="artist">by Meg Myers</span>
-    <br/>The Story <span class="artist">by Brandi Carlile</span>
-    <br/>Love Song <span class="artist">by Adele</span>
-    <br/>Passionfruit <span class="artist">by Drake / Paramore</span>
-    <br/>My Future <span class="artist">by Billie Eilish</span>
-    <br/>Heaven <span class="artist">by Alex Goot</span>
-    <br/>TV <span class="artist">by Billie Eilish</span>
-    <br/>Your Song <span class="artist">by Ellie Goulding</span>
-    <br/>Turning Tables <span class="artist">by Adele</span>
-    <br/>Zombie <span class="artist">by The Cranberries</span>
-    <br/>Killing Me Softly <span class="artist">by The Fugees / Roberta Flack</span>
-    <br/>Rolling in the Deep <span class="artist">by Adele</span>
-    <br/>Make You Feel My Love <span class="artist">by Adele</span>
-    <br/>Shallow <span class="artist">by Lady Gaga</span>
-    <br/>Say You Won't Let Go <span class="artist">by James Arthur</span>
-    <br/>I Won't Back Down <span class="artist">by Tom Petty</span>
-    <br/>Creep <span class="artist">by Radiohead</span>
-    <br/>Norwegian Wood <span class="artist">by The Beatles</span>
-  </section>
+<section id="songs">
+  <h2>Songs</h2>
+  <p>Here are some of the artists and songs we cover:</p>
+  <br/>The Underground <span class="artist">by Meg Myers</span>
+  <br/>The Story <span class="artist">by Brandi Carlile</span>
+  <br/>Love Song <span class="artist">by Adele</span>
+  <br/>Passionfruit <span class="artist">by Drake / Paramore</span>
+  <br/>My Future <span class="artist">by Billie Eilish</span>
+  <br/>Heaven <span class="artist">by Alex Goot</span>
+  <br/>TV <span class="artist">by Billie Eilish</span>
+  <br/>Your Song <span class="artist">by Ellie Goulding</span>
+  <br/>Turning Tables <span class="artist">by Adele</span>
+  <br/>Zombie <span class="artist">by The Cranberries</span>
+  <br/>Killing Me Softly <span class="artist">by The Fugees / Roberta Flack</span>
+  <br/>Rolling in the Deep <span class="artist">by Adele</span>
+  <br/>Make You Feel My Love <span class="artist">by Adele</span>
+  <br/>Shallow <span class="artist">by Lady Gaga</span>
+  <br/>Say You Won't Let Go <span class="artist">by James Arthur</span>
+  <br/>I Won't Back Down <span class="artist">by Tom Petty</span>
+  <br/>Creep <span class="artist">by Radiohead</span>
+  <br/>Norwegian Wood <span class="artist">by The Beatles</span>
+</section>
 
 <section id="media">
   <h2>Media</h2>
@@ -307,74 +434,141 @@
       title="YouTube video player" frameborder="0" allowfullscreen>
     </iframe>
   </div>
-
 </section>
-  <section id="presskit">
-    <h2>Press Kit</h2>
-    <p>We will post a press kit and contact info here soon!</p>
-  </section>
 
-  <footer>
-    <p>© 2025 Chasing Embers | Follow us on social media for updates</p>
-  </footer>
+<section id="presskit">
+  <h2>Press Kit</h2>
+  <p>We will post a press kit and contact info here soon!</p>
+</section>
 
-  <button id="backToTop" title="Back to Top">↑</button>
+<section id="contact">
+  <h2>Contact Us</h2>
+  <button id="openContactForm" class="contact-btn">Open Contact Form</button>
 
-  <!-- --- existing scripts --- -->
-  <script>
-    // Mobile menu toggle
-    const menuToggle = document.querySelector('.menu-toggle');
-    const nav = document.querySelector('nav');
-    const navLinks = document.querySelectorAll('nav a');
+  <div id="contactModal" class="modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <h3>Contact Chasing Embers</h3>
+      <iframe 
+        src="https://docs.google.com/forms/d/e/1FAIpQLSej6Jwap6-4TNaqmWHmXP3FHiCdQiy4sPTwme1TXnF5GubR2g/viewform?embedded=true"
+        width="100%" 
+        style="min-height:800px;" 
+        frameborder="0" 
+        marginheight="0" 
+        marginwidth="0">
+        Loading…
+      </iframe>
+    </div>
+  </div>
+</section>
 
-    menuToggle.addEventListener('click', () => {
-      nav.classList.toggle('active');
+<section id="socials">
+  <h2>Follow Us</h2>
+  <div class="social-links">
+    <a href="https://youtube.com/@chasingembers937" target="_blank" aria-label="YouTube">
+      <img src="https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/youtube.svg" alt="YouTube">
+    </a>
+    <a href="https://www.instagram.com/chasing_embers937/" target="_blank" aria-label="Instagram">
+      <img src="https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/instagram.svg" alt="Instagram">
+    </a>
+    <a href="https://facebook.com/chasingembers937" target="_blank" aria-label="Facebook">
+      <img src="https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/facebook.svg" alt="Facebook">
+    </a>
+    <a href="https://soundcloud.com/chasing-embers-820782589" target="_blank" aria-label="Soundcloud">
+      <img src="https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/soundcloud.svg" alt="Soundcloud">
+    </a>
+  </div>
+</section>
+
+<footer>
+  <p>© 2025 Chasing Embers</p>
+</footer>
+
+<button id="backToTop" title="Back to Top">↑</button>
+
+<script>
+  // Mobile menu toggle
+  const menuToggle = document.querySelector('.menu-toggle');
+  const nav = document.querySelector('nav');
+  const navLinks = document.querySelectorAll('nav a');
+
+  menuToggle.addEventListener('click', () => {
+    nav.classList.toggle('active');
+  });
+
+  // Back to top button
+  const backToTopBtn = document.getElementById('backToTop');
+
+  window.addEventListener('scroll', () => {
+    backToTopBtn.style.display = window.scrollY > 400 ? 'block' : 'none';
+  });
+
+  navLinks.forEach(link => {
+    link.addEventListener('click', () => {
+      backToTopBtn.style.display = 'block';
+      if (window.innerWidth <= 600) nav.classList.remove('active');
     });
+  });
 
-    // Auto close menu after clicking a link (mobile only)
-    navLinks.forEach(link => {
-      link.addEventListener('click', () => {
-        if (window.innerWidth <= 600) {
-          nav.classList.remove('active');
-        }
-      });
-    });
+  backToTopBtn.addEventListener('click', () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+</script>
 
-    // Back to top button
-    const backToTopBtn = document.getElementById('backToTop');
-    window.addEventListener('scroll', () => {
-      backToTopBtn.style.display = window.scrollY > 400 ? 'block' : 'none';
-    });
+<script src="https://www.youtube.com/iframe_api"></script>
+<script>
+  let players = {};
+  function onYouTubeIframeAPIReady() {
+    players.video1 = new YT.Player('video1', { events: { 'onStateChange': onPlayerStateChange } });
+    players.video2 = new YT.Player('video2', { events: { 'onStateChange': onPlayerStateChange } });
+  }
 
-    backToTopBtn.addEventListener('click', () => {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    });
-  </script>
-
-  <!-- --- YouTube IFrame API for stopping other videos --- -->
-  <script src="https://www.youtube.com/iframe_api"></script>
-  <script>
-    let players = {};
-
-    function onYouTubeIframeAPIReady() {
-      players.video1 = new YT.Player('video1', {
-        events: { 'onStateChange': onPlayerStateChange }
-      });
-      players.video2 = new YT.Player('video2', {
-        events: { 'onStateChange': onPlayerStateChange }
-      });
-    }
-
-    function onPlayerStateChange(event) {
-      if (event.data === YT.PlayerState.PLAYING) {
-        for (const key in players) {
-          if (players[key] !== event.target) {
-            players[key].pauseVideo();
-          }
-        }
+  function onPlayerStateChange(event) {
+    if (event.data === YT.PlayerState.PLAYING) {
+      for (const key in players) {
+        if (players[key] !== event.target) players[key].pauseVideo();
       }
     }
-  </script>
+  }
+</script>
+
+<script>
+  const modal = document.getElementById("contactModal");
+  const btn = document.getElementById("openContactForm");
+  const span = document.querySelector(".close");
+  const iframe = modal.querySelector("iframe");
+
+  btn.onclick = () => {
+    modal.style.display = "block";
+    document.body.style.overflow = "hidden";
+  };
+
+  function closeModal() {
+    modal.style.display = "none";
+    document.body.style.overflow = "auto";
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  span.onclick = closeModal;
+
+  window.onclick = (event) => { if (event.target === modal) closeModal(); };
+
+  document.querySelectorAll('nav a[href="#contact"]').forEach(link => {
+    link.addEventListener('click', (e) => {
+      e.preventDefault();
+      modal.style.display = "block";
+      document.body.style.overflow = "hidden";
+    });
+  });
+
+  let lastSrc = iframe.src;
+  iframe.addEventListener('load', () => {
+    if (iframe.src !== lastSrc) {
+      lastSrc = iframe.src;
+      setTimeout(closeModal, 1500);
+    }
+  });
+</script>
 
 </body>
 </html>
