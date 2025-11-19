@@ -8,6 +8,8 @@
 body { margin:0; font-family: Arial,sans-serif; background:#fafafa; }
 header { background:#333;color:#fff;padding:15px;text-align:center;font-size:1.5rem; }
 #container { display:flex;flex-direction:column;height:100vh; }
+#audio-container { text-align:center; padding:10px; background:#222; color:white; display:flex; justify-content:center; align-items:center; gap:10px; }
+#audio-status { font-weight:bold; }
 #menu { background:#444;color:#fff;padding:10px; }
 #menu h3 { margin-top:0; cursor:pointer; }
 #song-search { margin:10px 0; text-align:center; display:none; }
@@ -26,6 +28,12 @@ footer a { color:#00aaff; text-decoration:none; }
 </head>
 <body>
 <div id="container">
+
+  <!-- Audio Player -->
+  <div id="audio-container">
+    <audio id="audio-player" controls></audio>
+    <span id="audio-status">No song loaded</span>
+  </div>
 
   <!-- Lyrics/Chords Radio -->
   <div id="view-options">
@@ -47,7 +55,7 @@ footer a { color:#00aaff; text-decoration:none; }
   <div id="menu">
     <h3 onclick="toggleMenu()">Song List ▼</h3>
 
-    <!-- Search (initially hidden) -->
+    <!-- Search -->
     <div id="song-search">
       <input type="text" id="search-input" placeholder="Search songs..." style="width:70%; padding:4px;" oninput="filterSongs()">
       <button class="btn" onclick="filterSongs()">Search</button>
@@ -82,6 +90,9 @@ let songs = [], currentSong = null;
 let sortAsc = {0:true, 1:true, 2:true};
 let viewType = 'lyrics';
 
+const audioPlayer = document.getElementById('audio-player');
+const audioStatus = document.getElementById('audio-status');
+
 // Load songs JSON
 fetch('songs.json')
   .then(res => res.json())
@@ -103,7 +114,7 @@ function populateSongTable(filteredSongs = null){
   });
 }
 
-// Get filtered songs from search input (checks both title & artist)
+// Filter songs
 function filteredSongs(){
   const input = document.getElementById('search-input').value.toLowerCase();
   return songs.filter(song => 
@@ -112,27 +123,37 @@ function filteredSongs(){
   );
 }
 
-// Filter table based on search
 function filterSongs(){
   populateSongTable(filteredSongs());
 }
 
-// Load selected song
+// Load song
 function loadSong(index){
   currentSong = songs[index];
 
-  // Collapse menu and hide search
+  // Collapse menu
   document.getElementById('song-table-container').style.display = 'none';
   document.getElementById('song-search').style.display = 'none';
 
-  // Fetch lyrics/chords using lowercase JSON keys
+  // Load lyrics and chords
   fetch(currentSong.lyricsfile).then(r => r.text()).then(text => {
-    currentSong.lyrics = text;
-    updateView();
+    currentSong.lyrics = text; updateView();
   });
   fetch(currentSong.chordsfile).then(r => r.text()).then(text => {
     currentSong.chords = text;
   });
+
+  // Load audio
+  if(currentSong.backingtrack){
+    audioPlayer.src = currentSong.backingtrack;
+    audioPlayer.load();
+    audioPlayer.oncanplay = () => { audioStatus.innerText = 'Audio loaded ✅'; audioStatus.style.color = 'lime'; };
+    audioPlayer.onerror = () => { audioStatus.innerText = 'Audio failed ❌'; audioStatus.style.color = 'red'; };
+  } else {
+    audioPlayer.src = '';
+    audioStatus.innerText = 'No audio file ❌';
+    audioStatus.style.color = 'red';
+  }
 }
 
 // Update lyrics/chords view
@@ -140,7 +161,7 @@ function updateView(){
   const container = document.getElementById('lyrics-container');
   viewType = document.querySelector('input[name=viewType]:checked').value;
   if(!currentSong){ 
-    container.innerText = 'Select a song from the menu to view lyrics.';
+    container.innerText = 'Select a song from the menu to view lyrics.'; 
     return; 
   }
   if(viewType === 'lyrics' && currentSong.lyrics){
