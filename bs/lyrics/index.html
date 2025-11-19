@@ -25,7 +25,7 @@
       height: 100vh;
     }
 
-    /* Navigation Menu */
+    /* Collapsible Navigation Menu */
     #menu {
       background: #444;
       color: #fff;
@@ -34,22 +34,33 @@
 
     #menu h2 {
       margin-top: 0;
+      cursor: pointer;
     }
 
-    #menu ul {
-      list-style: none;
-      padding: 0;
-      margin: 0;
+    #song-table-container {
+      display: none;
+      max-height: 250px;
+      overflow-y: auto;
+      background: #333;
+      padding: 10px;
+      border-radius: 5px;
     }
 
-    #menu li {
-      padding: 8px 0;
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      color: #fff;
+      font-size: 0.9rem;
+    }
+
+    th, td {
+      padding: 8px;
       border-bottom: 1px solid #555;
       cursor: pointer;
     }
 
-    #menu li:hover {
-      color: #00d0ff;
+    tr:hover td {
+      background: #555;
     }
 
     /* Lyrics Display */
@@ -62,11 +73,11 @@
       background: #fff;
     }
 
-    /* Autoscroll Controls */
+    /* Controls */
     #controls {
       display: flex;
       justify-content: center;
-      gap: 15px;
+      gap: 10px;
       padding: 10px;
       background: #333;
     }
@@ -75,9 +86,9 @@
       background: #00aaff;
       color: white;
       border: none;
-      padding: 10px 20px;
+      padding: 6px 14px;
       border-radius: 5px;
-      font-size: 16px;
+      font-size: 14px;
       cursor: pointer;
     }
 
@@ -85,11 +96,16 @@
       background: #0088cc;
     }
 
-    /* Mobile & Tablet Optimization */
-    @media (max-width: 768px) {
-      #lyrics-container {
-        font-size: 18px;
-      }
+    /* Footer */
+    footer {
+      text-align: center;
+      padding: 10px;
+      background: #222;
+    }
+
+    footer a {
+      color: #00aaff;
+      text-decoration: none;
     }
 
   </style>
@@ -99,39 +115,57 @@
   <header>Song Lyrics Viewer</header>
 
   <div id="container">
-    <!-- MENU -->
-    <div id=\"menu\">
-      <h2 style=\"cursor:pointer;\" onclick=\"toggleMenu()\">Song List ▼</h2>
-      <ul id=\"song-list\" style=\"display:none;\">
-        <li onclick="loadLyrics('lyrics/TheStory.txt')">The Story</li>
-        <li onclick="loadLyrics('lyrics/TheStory.txt')">The Story</li>
-        <li onclick="loadLyrics('lyrics/TheStory.txt')">The Story</li>
-      </ul>
-    </div>
-
-        <!-- AUTOSCROLL CONTROLS -->
-    <div id="controls">
+        <div id="controls">
       <button class="btn" onclick="startScroll()">Start</button>
       <button class="btn" onclick="stopScroll()">Stop</button>
       <button class="btn" onclick="increaseSpeed()">Faster</button>
       <button class="btn" onclick="decreaseSpeed()">Slower</button>
+      <button class="btn" onclick="increaseFont()">A+</button>
+      <button class="btn" onclick="decreaseFont()">A-</button>
     </div>
-    
-    <!-- LYRICS DISPLAY -->
+    <!-- Song Navigation Menu -->
+    <div id="menu">
+      <h2 onclick="toggleMenu()">Song List ▼</h2>
+      <div id="song-table-container">
+        <table id="song-table">
+          <thead>
+            <tr>
+              <th onclick="sortTable(0)">SEQ</th>
+              <th onclick="sortTable(1)">Song Title</th>
+            </tr>
+          </thead>
+          <tbody id="song-tbody">
+            <tr onclick="loadLyrics('lyrics/TheStory.txt')"><td>1</td><td>Song 1</td></tr>
+            <tr onclick="loadLyrics('lyrics/TheStory.txt')"><td>1</td><td>Song 2</td></tr>
+            <tr onclick="loadLyrics('lyrics/TheStory.txt')"><td>1</td><td>Song 3</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Lyrics View -->
     <div id="lyrics-container">Select a song from the menu to view lyrics.</div>
+
+    <!-- Controls -->
 
   </div>
 
+  <footer>
+    <a href="https://chasingembers937.com/bs/index.html" target="_blank">Back to Chasing Embers</a>
+  </footer>
+
   <script>
     let scrollInterval;
-    let scrollSpeed = 50; // Lower = faster
+    let scrollSpeed = 80; // 50% slower than before
+    let fontSize = 18;
 
     function loadLyrics(file) {
       fetch(file)
         .then(response => response.text())
         .then(text => {
-          document.getElementById('lyrics-container').innerText = text;
-          document.getElementById('lyrics-container').scrollTop = 0;
+          const el = document.getElementById('lyrics-container');
+          el.innerText = text;
+          el.scrollTop = 0;
         })
         .catch(err => {
           document.getElementById('lyrics-container').innerText = "Error loading lyrics.";
@@ -141,8 +175,7 @@
     function startScroll() {
       stopScroll();
       scrollInterval = setInterval(() => {
-        const el = document.getElementById('lyrics-container');
-        el.scrollTop += 1;
+        document.getElementById('lyrics-container').scrollTop += 1;
       }, scrollSpeed);
     }
 
@@ -151,17 +184,42 @@
     }
 
     function increaseSpeed() {
-      if (scrollSpeed > 5) scrollSpeed -= 5;
+      if (scrollSpeed > 10) scrollSpeed -= 10;
       startScroll();
     }
 
     function decreaseSpeed() {
-      scrollSpeed += 5;
+      scrollSpeed += 10;
       startScroll();
     }
+
+    function increaseFont() {
+      fontSize += 2;
+      document.getElementById('lyrics-container').style.fontSize = fontSize + 'px';
+    }
+
+    function decreaseFont() {
+      fontSize -= 2;
+      if (fontSize < 10) fontSize = 10;
+      document.getElementById('lyrics-container').style.fontSize = fontSize + 'px';
+    }
+
     function toggleMenu() {
-      const list = document.getElementById('song-list');
-      list.style.display = list.style.display === 'none' ? 'block' : 'none';
+      const box = document.getElementById('song-table-container');
+      box.style.display = box.style.display === 'none' ? 'block' : 'none';
+    }
+
+    function sortTable(colIndex) {
+      const tbody = document.getElementById('song-tbody');
+      const rows = Array.from(tbody.querySelectorAll('tr'));
+
+      rows.sort((a, b) => {
+        const A = a.children[colIndex].innerText;
+        const B = b.children[colIndex].innerText;
+        return colIndex === 0 ? Number(A) - Number(B) : A.localeCompare(B);
+      });
+
+      rows.forEach(r => tbody.appendChild(r));
     }
 
   </script>
