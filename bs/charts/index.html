@@ -64,7 +64,7 @@ let sortAsc={0:true,1:true};
 let viewType='lyrics';
 
 // Load JSON file with song file references
-fetch('charts/songs.json')
+fetch('songs.json')
   .then(res => res.json())
   .then(data => { songs=data; populateSongTable(); });
 
