@@ -6,11 +6,11 @@
 <title>Song Lyrics Viewer</title>
 <style>
 body { margin:0; font-family: Arial,sans-serif; background:#fafafa; }
-header { background:#333;color:#fff;padding:3px;text-align:center;font-size:.8rem; }
+header { background:#333;color:#fff;padding:15px;text-align:center;font-size:1.5rem; }
 #container { display:flex;flex-direction:column;height:100vh; }
 #menu { background:#444;color:#fff;padding:10px; }
 #menu h3 { margin-top:0; cursor:pointer; }
-#song-search { margin:10px 0; text-align:center; }
+#song-search { margin:10px 0; text-align:center; display:none; }
 #song-table-container { display:none; max-height:250px; overflow-y:auto; background:#333; padding:10px; border-radius:5px; }
 table { width:100%; border-collapse:collapse; color:#fff; font-size:0.9rem; }
 th, td { padding:8px; border-bottom:1px solid #555; cursor:pointer; }
@@ -48,7 +48,7 @@ footer a { color:#00aaff; text-decoration:none; }
   <div id="menu">
     <h3 onclick="toggleMenu()">Song List ▼</h3>
 
-    <!-- Search -->
+    <!-- Search (initially hidden) -->
     <div id="song-search">
       <input type="text" id="search-input" placeholder="Search songs..." style="width:70%; padding:4px;" oninput="filterSongs()">
       <button class="btn" onclick="filterSongs()">Search</button>
@@ -68,7 +68,7 @@ footer a { color:#00aaff; text-decoration:none; }
   </div>
 
   <!-- Lyrics Display -->
-  <div id="lyrics-container">Select a song from the menu to view lyrics or chords. Use the radio button to select between lyrics and chords.</div>
+  <div id="lyrics-container">Select a song from the menu to view lyrics.</div>
 
 </div>
 
@@ -77,7 +77,7 @@ footer a { color:#00aaff; text-decoration:none; }
 </footer>
 
 <script>
-let scrollInterval, scrollSpeed=130, fontSize=18;
+let scrollInterval, scrollSpeed=200, fontSize=18;
 let songs=[], currentSong=null;
 let sortAsc={0:true,1:true};
 let viewType='lyrics';
@@ -100,12 +100,28 @@ function populateSongTable(filteredSongs = null){
   });
 }
 
+// Get filtered songs from search input
+function filteredSongs(){
+  const input = document.getElementById('search-input').value.toLowerCase();
+  return songs.filter(song => song.title.toLowerCase().includes(input));
+}
+
+// Filter table based on search
+function filterSongs(){
+  populateSongTable(filteredSongs());
+}
+
 // Load selected song
 function loadSong(index){
-  currentSong=(document.getElementById('search-input').value ? filteredSongs()[index] : songs[index]);
-  document.getElementById('song-table-container').style.display='none'; // collapse menu
-
-  // Fetch lyrics/chords files
+  // Choose from filtered list if search active
+  const filtered = filteredSongs();
+  currentSong = document.getElementById('search-input').value ? filtered[index] : songs[index];
+  
+  // Collapse menu and hide search
+  document.getElementById('song-table-container').style.display = 'none';
+  document.getElementById('song-search').style.display = 'none';
+  
+  // Fetch lyrics/chords
   fetch(currentSong.lyricsFile).then(r=>r.text()).then(text=>{currentSong.lyrics=text; updateView();});
   fetch(currentSong.chordsFile).then(r=>r.text()).then(text=>{currentSong.chords=text;});
 }
@@ -132,7 +148,13 @@ function increaseFont(){fontSize+=2; document.getElementById('lyrics-container')
 function decreaseFont(){fontSize=Math.max(10,fontSize-2); document.getElementById('lyrics-container').style.fontSize=fontSize+'px';}
 
 // Menu toggle
-function toggleMenu(){const box=document.getElementById('song-table-container'); box.style.display=box.style.display==='none'?'block':'none';}
+function toggleMenu(){
+  const box=document.getElementById('song-table-container');
+  const search=document.getElementById('song-search');
+  const isHidden = box.style.display==='none';
+  box.style.display = isHidden ? 'block' : 'none';
+  search.style.display = isHidden ? 'block' : 'none';
+}
 
 // Table sorting
 function sortTable(colIndex,isNumber){
@@ -146,16 +168,6 @@ function sortTable(colIndex,isNumber){
   });
   rows.forEach(r=>tbody.appendChild(r));
   sortAsc[colIndex]=!asc;
-}
-
-// Filter songs from search input
-function filteredSongs(){
-  const input = document.getElementById('search-input').value.toLowerCase();
-  return songs.filter(song => song.title.toLowerCase().includes(input));
-}
-
-function filterSongs(){
-  populateSongTable(filteredSongs());
 }
 </script>
 </body>
