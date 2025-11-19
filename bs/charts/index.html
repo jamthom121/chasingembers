@@ -118,11 +118,6 @@ function populateSongTable(filteredSongs = null){
   tbody.innerHTML = '';
   const list = filteredSongs || songs;
 
-function populateSongTable(filteredSongs = null){
-  const tbody = document.getElementById('song-tbody');
-  tbody.innerHTML = '';
-  const list = filteredSongs || songs;
-
   list.forEach((song) => {
     const tr = document.createElement('tr');
     const realIndex = songs.indexOf(song);
@@ -137,9 +132,6 @@ function populateSongTable(filteredSongs = null){
 
     tbody.appendChild(tr);
   });
-
-  highlightCurrentSong();
-}
 
   highlightCurrentSong();
 }
