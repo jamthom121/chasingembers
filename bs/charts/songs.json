@@ -2,8 +2,7 @@
   {
     "title": "The Story",
     "artist": "Brandi Carlile",
-    "lyrics":
-    "The Story
+    "lyrics":"The Story
 
 All of these lines across my face
 Tell you the story of who I am
@@ -37,8 +36,8 @@ Oh, but these stories don't mean anything
 When you've got no one to tell them to
 It's true, I was made for you
 
-Oh, yeah, well it's true that I was made for you"
-    ,"chords": "C G Am F"
+Oh, yeah, well it's true that I was made for you",
+  "chords": "C G Am F"
   },
   {
     "title": "Song 2",
