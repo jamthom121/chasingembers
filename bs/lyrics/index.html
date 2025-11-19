@@ -115,14 +115,6 @@
   <header>Song Lyrics Viewer</header>
 
   <div id="container">
-        <div id="controls">
-      <button class="btn" onclick="startScroll()">Start</button>
-      <button class="btn" onclick="stopScroll()">Stop</button>
-      <button class="btn" onclick="increaseSpeed()">Faster</button>
-      <button class="btn" onclick="decreaseSpeed()">Slower</button>
-      <button class="btn" onclick="increaseFont()">A+</button>
-      <button class="btn" onclick="decreaseFont()">A-</button>
-    </div>
     <!-- Song Navigation Menu -->
     <div id="menu">
       <h2 onclick="toggleMenu()">Song List ▼</h2>
@@ -135,9 +127,9 @@
             </tr>
           </thead>
           <tbody id="song-tbody">
-            <tr onclick="loadLyrics('lyrics/TheStory.txt')"><td>1</td><td>Song 1</td></tr>
-            <tr onclick="loadLyrics('lyrics/TheStory.txt')"><td>1</td><td>Song 2</td></tr>
-            <tr onclick="loadLyrics('lyrics/TheStory.txt')"><td>1</td><td>Song 3</td></tr>
+            <tr onclick="loadLyrics('charts/song1.txt')"><td>1</td><td>Song 1</td></tr>
+            <tr onclick="loadLyrics('charts/song2.txt')"><td>2</td><td>Song 2</td></tr>
+            <tr onclick="loadLyrics('charts/song3.txt')"><td>3</td><td>Song 3</td></tr>
           </tbody>
         </table>
       </div>
@@ -147,7 +139,14 @@
     <div id="lyrics-container">Select a song from the menu to view lyrics.</div>
 
     <!-- Controls -->
-
+    <div id="controls">
+      <button class="btn" onclick="startScroll()">Start</button>
+      <button class="btn" onclick="stopScroll()">Stop</button>
+      <button class="btn" onclick="increaseSpeed()">Faster</button>
+      <button class="btn" onclick="decreaseSpeed()">Slower</button>
+      <button class="btn" onclick="increaseFont()">A+</button>
+      <button class="btn" onclick="decreaseFont()">A-</button>
+    </div>
   </div>
 
   <footer>
@@ -156,10 +155,12 @@
 
   <script>
     let scrollInterval;
-    let scrollSpeed = 200; // 50% slower than before
+    let scrollSpeed = 115; // 50% slower than before
     let fontSize = 18;
 
     function loadLyrics(file) {
+      // Auto-collapse menu when a song is clicked
+      document.getElementById('song-table-container').style.display = 'none';
       fetch(file)
         .then(response => response.text())
         .then(text => {
