@@ -118,13 +118,29 @@ function populateSongTable(filteredSongs = null){
   tbody.innerHTML = '';
   const list = filteredSongs || songs;
 
+function populateSongTable(filteredSongs = null){
+  const tbody = document.getElementById('song-tbody');
+  tbody.innerHTML = '';
+  const list = filteredSongs || songs;
+
   list.forEach((song) => {
-  const tr = document.createElement('tr');
-  const realIndex = songs.indexOf(song);
-  tr.dataset.index = realIndex;
-  tr.onclick = () => loadSong(realIndex);
-  tbody.appendChild(tr);
+    const tr = document.createElement('tr');
+    const realIndex = songs.indexOf(song);
+    tr.dataset.index = realIndex;
+    tr.onclick = () => loadSong(realIndex);
+
+    tr.innerHTML = `
+      <td>${song.seq}</td>
+      <td>${song.title}</td>
+      <td>${song.artist}</td>
+    `;
+
+    tbody.appendChild(tr);
   });
+
+  highlightCurrentSong();
+}
+
   highlightCurrentSong();
 }
 
