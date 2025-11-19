@@ -104,21 +104,22 @@
       <h2 style=\"cursor:pointer;\" onclick=\"toggleMenu()\">Song List ▼</h2>
       <ul id=\"song-list\" style=\"display:none;\">
         <li onclick="loadLyrics('lyrics/TheStory.txt')">The Story</li>
-        <li onclick="loadLyrics('charts/song2.txt')">Song 2</li>
-        <li onclick="loadLyrics('charts/song3.txt')">Song 3</li>
+        <li onclick="loadLyrics('lyrics/TheStory.txt')">The Story</li>
+        <li onclick="loadLyrics('lyrics/TheStory.txt')">The Story</li>
       </ul>
     </div>
 
-    <!-- LYRICS DISPLAY -->
-    <div id="lyrics-container">Select a song from the menu to view lyrics.</div>
-
-    <!-- AUTOSCROLL CONTROLS -->
+        <!-- AUTOSCROLL CONTROLS -->
     <div id="controls">
       <button class="btn" onclick="startScroll()">Start</button>
       <button class="btn" onclick="stopScroll()">Stop</button>
       <button class="btn" onclick="increaseSpeed()">Faster</button>
       <button class="btn" onclick="decreaseSpeed()">Slower</button>
     </div>
+    
+    <!-- LYRICS DISPLAY -->
+    <div id="lyrics-container">Select a song from the menu to view lyrics.</div>
+
   </div>
 
   <script>
