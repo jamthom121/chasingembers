@@ -59,6 +59,7 @@ footer a { color:#00aaff; text-decoration:none; }
           <tr>
             <th onclick="sortTable(0,true)">SEQ</th>
             <th onclick="sortTable(1,false)">Song Title</th>
+            <th onclick="sortTable(2,false)">Artist</th>
           </tr>
         </thead>
         <tbody id="song-tbody"></tbody>
@@ -76,33 +77,39 @@ footer a { color:#00aaff; text-decoration:none; }
 </footer>
 
 <script>
-let scrollInterval, scrollSpeed=130, fontSize=18;
-let songs=[], currentSong=null;
-let sortAsc={0:true,1:true};
-let viewType='lyrics';
+let scrollInterval, scrollSpeed = 130, fontSize = 18;
+let songs = [], currentSong = null;
+let sortAsc = {0:true, 1:true, 2:true};
+let viewType = 'lyrics';
 
 // Load songs JSON
 fetch('songs.json')
   .then(res => res.json())
-  .then(data => { songs=data; populateSongTable(); });
+  .then(data => { songs = data; populateSongTable(); });
 
 // Populate song table
 function populateSongTable(filteredSongs = null){
-  const tbody=document.getElementById('song-tbody');
-  tbody.innerHTML='';
+  const tbody = document.getElementById('song-tbody');
+  tbody.innerHTML = '';
   const list = filteredSongs || songs;
-  list.forEach((song,i)=>{
-    const tr=document.createElement('tr');
-    tr.innerHTML=`<td>${i+1}</td><td>${song.title}</td>`;
-    tr.onclick=()=>loadSong(i);
+  list.forEach(song => {
+    const tr = document.createElement('tr');
+    tr.innerHTML = `<td>${song.seq}</td><td>${song.title}</td><td>${song.artist}</td>`;
+    tr.onclick = () => {
+      const indexInSongs = songs.findIndex(s => s.seq === song.seq);
+      loadSong(indexInSongs);
+    };
     tbody.appendChild(tr);
   });
 }
 
-// Get filtered songs from search input
+// Get filtered songs from search input (checks both title & artist)
 function filteredSongs(){
   const input = document.getElementById('search-input').value.toLowerCase();
-  return songs.filter(song => song.title.toLowerCase().includes(input));
+  return songs.filter(song => 
+    song.title.toLowerCase().includes(input) || 
+    song.artist.toLowerCase().includes(input)
+  );
 }
 
 // Filter table based on search
@@ -112,61 +119,70 @@ function filterSongs(){
 
 // Load selected song
 function loadSong(index){
-  // Choose from filtered list if search active
-  const filtered = filteredSongs();
-  currentSong = document.getElementById('search-input').value ? filtered[index] : songs[index];
-  
+  currentSong = songs[index];
+
   // Collapse menu and hide search
   document.getElementById('song-table-container').style.display = 'none';
   document.getElementById('song-search').style.display = 'none';
-  
-  // Fetch lyrics/chords
-  fetch(currentSong.lyricsFile).then(r=>r.text()).then(text=>{currentSong.lyrics=text; updateView();});
-  fetch(currentSong.chordsFile).then(r=>r.text()).then(text=>{currentSong.chords=text;});
+
+  // Fetch lyrics/chords using lowercase JSON keys
+  fetch(currentSong.lyricsfile).then(r => r.text()).then(text => {
+    currentSong.lyrics = text;
+    updateView();
+  });
+  fetch(currentSong.chordsfile).then(r => r.text()).then(text => {
+    currentSong.chords = text;
+  });
 }
 
 // Update lyrics/chords view
 function updateView(){
-  const container=document.getElementById('lyrics-container');
-  viewType=document.querySelector('input[name=viewType]:checked').value;
-  if(!currentSong){ container.innerText='Select a song from the menu to view lyrics.'; return; }
-  if(viewType==='lyrics' && currentSong.lyrics){
-    container.innerText=currentSong.lyrics;
-  } else if(viewType==='chords' && currentSong.chords){
-    container.innerHTML=`<pre>${currentSong.chords}</pre>`;
-  } else { container.innerText='Loading...'; }
-  container.scrollTop=0;
+  const container = document.getElementById('lyrics-container');
+  viewType = document.querySelector('input[name=viewType]:checked').value;
+  if(!currentSong){ 
+    container.innerText = 'Select a song from the menu to view lyrics.';
+    return; 
+  }
+  if(viewType === 'lyrics' && currentSong.lyrics){
+    container.innerText = currentSong.lyrics;
+  } else if(viewType === 'chords' && currentSong.chords){
+    container.innerHTML = `<pre>${currentSong.chords}</pre>`;
+  } else {
+    container.innerText = 'Loading...';
+  }
+  container.scrollTop = 0;
 }
 
 // Autoscroll / Font
-function startScroll(){stopScroll(); scrollInterval=setInterval(()=>document.getElementById('lyrics-container').scrollTop+=1,scrollSpeed);}
+function startScroll(){stopScroll(); scrollInterval=setInterval(()=>document.getElementById('lyrics-container').scrollTop+=1, scrollSpeed);}
 function stopScroll(){clearInterval(scrollInterval);}
-function increaseSpeed(){if(scrollSpeed>10)scrollSpeed-=10;startScroll();}
-function decreaseSpeed(){scrollSpeed+=10;startScroll();}
+function increaseSpeed(){if(scrollSpeed>10) scrollSpeed-=10; startScroll();}
+function decreaseSpeed(){scrollSpeed+=10; startScroll();}
 function increaseFont(){fontSize+=2; document.getElementById('lyrics-container').style.fontSize=fontSize+'px';}
 function decreaseFont(){fontSize=Math.max(10,fontSize-2); document.getElementById('lyrics-container').style.fontSize=fontSize+'px';}
 
 // Menu toggle
 function toggleMenu(){
-  const box=document.getElementById('song-table-container');
-  const search=document.getElementById('song-search');
-  const isHidden = box.style.display==='none';
+  const box = document.getElementById('song-table-container');
+  const search = document.getElementById('song-search');
+  const isHidden = box.style.display === 'none';
   box.style.display = isHidden ? 'block' : 'none';
   search.style.display = isHidden ? 'block' : 'none';
 }
 
 // Table sorting
-function sortTable(colIndex,isNumber){
-  const tbody=document.getElementById('song-tbody');
-  const rows=Array.from(tbody.querySelectorAll('tr'));
-  const asc=sortAsc[colIndex];
-  rows.sort((a,b)=>{
-    const A=a.children[colIndex].innerText; const B=b.children[colIndex].innerText;
-    if(isNumber) return asc?Number(A)-Number(B):Number(B)-Number(A);
-    return asc?A.localeCompare(B):B.localeCompare(A);
+function sortTable(colIndex, isNumber){
+  const tbody = document.getElementById('song-tbody');
+  const rows = Array.from(tbody.querySelectorAll('tr'));
+  const asc = sortAsc[colIndex];
+  rows.sort((a,b) => {
+    const A = a.children[colIndex].innerText;
+    const B = b.children[colIndex].innerText;
+    if(isNumber) return asc ? Number(A)-Number(B) : Number(B)-Number(A);
+    return asc ? A.localeCompare(B) : B.localeCompare(A);
   });
-  rows.forEach(r=>tbody.appendChild(r));
-  sortAsc[colIndex]=!asc;
+  rows.forEach(r => tbody.appendChild(r));
+  sortAsc[colIndex] = !asc;
 }
 </script>
 </body>
