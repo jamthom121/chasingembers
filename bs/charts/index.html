@@ -6,17 +6,19 @@
 <title>Song Lyrics Viewer</title>
 <style>
 body { margin:0; font-family: Arial,sans-serif; background:#fafafa; }
-header { background:#333;color:#fff;padding:15px;text-align:center;font-size:1.5rem; }
 #container { display:flex;flex-direction:column;height:100vh; }
 #audio-container { text-align:center; padding:10px; background:#222; color:white; display:flex; justify-content:center; align-items:center; gap:10px; }
 #audio-status { font-weight:bold; }
-#menu { background:#444;color:#fff;padding:10px; }
-#menu h3 { margin-top:0; cursor:pointer; }
-#song-search { margin:10px 0; text-align:center; display:none; }
-#song-table-container { display:none; max-height:250px; overflow-y:auto; background:#333; padding:10px; border-radius:5px; }
+#menu { background:#444;color:#fff;padding:10px; display:flex; flex-direction:column; gap:5px; }
+#menu-header { display:flex; justify-content:space-between; align-items:center; }
+#menu-header h3 { margin:0; cursor:pointer; }
+#prev-next { display:flex; gap:5px; }
+#song-search { text-align:center; display:none; margin-top:5px; }
+#song-table-container { display:none; max-height:250px; overflow-y:auto; background:#333; padding:10px; border-radius:5px; margin-top:5px; }
 table { width:100%; border-collapse:collapse; color:#fff; font-size:0.9rem; }
 th, td { padding:8px; border-bottom:1px solid #555; cursor:pointer; }
 tr:hover td { background:#555; }
+tr.current { background:#0088cc !important; }
 #lyrics-container { flex:1; overflow-y:auto; padding:20px; font-size:18px; line-height:1.5; background:#fff; white-space: pre-wrap; }
 #controls { display:flex; justify-content:center; gap:10px; padding:10px; background:#333; flex-wrap:wrap; }
 .btn { background:#00aaff; color:white; border:none; padding:2px 10px; border-radius:4px; font-size:10px; cursor:pointer; }
@@ -53,14 +55,22 @@ footer a { color:#00aaff; text-decoration:none; }
 
   <!-- Song Menu -->
   <div id="menu">
-    <h3 onclick="toggleMenu()">Song List ▼</h3>
+    <!-- Level 1 -->
+    <div id="menu-header">
+      <h3 onclick="toggleMenu()">Song List ▼</h3>
+      <div id="prev-next">
+        <button class="btn" onclick="prevSong()">Prev</button>
+        <button class="btn" onclick="nextSong()">Next</button>
+      </div>
+    </div>
 
-    <!-- Search -->
+    <!-- Level 2: Search -->
     <div id="song-search">
       <input type="text" id="search-input" placeholder="Search songs..." style="width:70%; padding:4px;" oninput="filterSongs()">
       <button class="btn" onclick="filterSongs()">Search</button>
     </div>
 
+    <!-- Level 3: Song Table -->
     <div id="song-table-container">
       <table id="song-table">
         <thead>
@@ -86,7 +96,7 @@ footer a { color:#00aaff; text-decoration:none; }
 
 <script>
 let scrollInterval, scrollSpeed = 130, fontSize = 18;
-let songs = [], currentSong = null;
+let songs = [], currentSongIndex = 0;
 let sortAsc = {0:true, 1:true, 2:true};
 let viewType = 'lyrics';
 
@@ -96,22 +106,36 @@ const audioStatus = document.getElementById('audio-status');
 // Load songs JSON
 fetch('songs.json')
   .then(res => res.json())
-  .then(data => { songs = data; populateSongTable(); });
+  .then(data => {
+    songs = data.sort((a,b) => a.seq - b.seq);
+    populateSongTable();
+    loadSong(0);
+  });
 
 // Populate song table
 function populateSongTable(filteredSongs = null){
   const tbody = document.getElementById('song-tbody');
   tbody.innerHTML = '';
   const list = filteredSongs || songs;
-  list.forEach(song => {
+  list.forEach((song, idx) => {
     const tr = document.createElement('tr');
+    tr.dataset.index = idx;
     tr.innerHTML = `<td>${song.seq}</td><td>${song.title}</td><td>${song.artist}</td>`;
-    tr.onclick = () => {
-      const indexInSongs = songs.findIndex(s => s.seq === song.seq);
-      loadSong(indexInSongs);
-    };
+    tr.onclick = () => loadSong(idx);
     tbody.appendChild(tr);
   });
+  highlightCurrentSong();
+}
+
+// Highlight current song and scroll into view
+function highlightCurrentSong(){
+  const tbody = document.getElementById('song-tbody');
+  Array.from(tbody.querySelectorAll('tr')).forEach(row => row.classList.remove('current'));
+  const currentRow = tbody.querySelector(`tr[data-index="${currentSongIndex}"]`);
+  if(currentRow){
+    currentRow.classList.add('current');
+    currentRow.scrollIntoView({behavior:'smooth', block:'center'});
+  }
 }
 
 // Filter songs
@@ -129,23 +153,25 @@ function filterSongs(){
 
 // Load song
 function loadSong(index){
-  currentSong = songs[index];
+  if(index < 0 || index >= songs.length) return;
+  currentSongIndex = index;
+  const song = songs[index];
 
   // Collapse menu
   document.getElementById('song-table-container').style.display = 'none';
   document.getElementById('song-search').style.display = 'none';
 
   // Load lyrics and chords
-  fetch(currentSong.lyricsfile).then(r => r.text()).then(text => {
-    currentSong.lyrics = text; updateView();
+  fetch(song.lyricsfile).then(r => r.text()).then(text => {
+    song.lyrics = text; updateView();
   });
-  fetch(currentSong.chordsfile).then(r => r.text()).then(text => {
-    currentSong.chords = text;
+  fetch(song.chordsfile).then(r => r.text()).then(text => {
+    song.chords = text;
   });
 
   // Load audio
-  if(currentSong.backingtrack){
-    audioPlayer.src = currentSong.backingtrack;
+  if(song.backingtrack){
+    audioPlayer.src = song.backingtrack;
     audioPlayer.load();
     audioPlayer.oncanplay = () => { audioStatus.innerText = 'Audio loaded ✅'; audioStatus.style.color = 'lime'; };
     audioPlayer.onerror = () => { audioStatus.innerText = 'Audio failed ❌'; audioStatus.style.color = 'red'; };
@@ -154,20 +180,33 @@ function loadSong(index){
     audioStatus.innerText = 'No audio file ❌';
     audioStatus.style.color = 'red';
   }
+
+  highlightCurrentSong();
+}
+
+// Previous / Next song
+function prevSong(){ 
+  const newIndex = (currentSongIndex - 1 + songs.length) % songs.length;
+  loadSong(newIndex);
+}
+function nextSong(){ 
+  const newIndex = (currentSongIndex + 1) % songs.length;
+  loadSong(newIndex);
 }
 
 // Update lyrics/chords view
 function updateView(){
   const container = document.getElementById('lyrics-container');
   viewType = document.querySelector('input[name=viewType]:checked').value;
-  if(!currentSong){ 
+  const song = songs[currentSongIndex];
+  if(!song){ 
     container.innerText = 'Select a song from the menu to view lyrics.'; 
     return; 
   }
-  if(viewType === 'lyrics' && currentSong.lyrics){
-    container.innerText = currentSong.lyrics;
-  } else if(viewType === 'chords' && currentSong.chords){
-    container.innerHTML = `<pre>${currentSong.chords}</pre>`;
+  if(viewType === 'lyrics' && song.lyrics){
+    container.innerText = song.lyrics;
+  } else if(viewType === 'chords' && song.chords){
+    container.innerHTML = `<pre>${song.chords}</pre>`;
   } else {
     container.innerText = 'Loading...';
   }
@@ -204,6 +243,7 @@ function sortTable(colIndex, isNumber){
   });
   rows.forEach(r => tbody.appendChild(r));
   sortAsc[colIndex] = !asc;
+  highlightCurrentSong();
 }
 </script>
 </body>
