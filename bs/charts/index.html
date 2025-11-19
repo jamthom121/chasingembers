@@ -9,7 +9,7 @@ body { margin:0; font-family: Arial,sans-serif; background:#fafafa; }
 header { background:#333;color:#fff;padding:15px;text-align:center;font-size:1.5rem; }
 #container { display:flex;flex-direction:column;height:100vh; }
 #menu { background:#444;color:#fff;padding:10px; }
-#menu h2 { margin-top:0; cursor:pointer; }
+#menu h3 { margin-top:0; cursor:pointer; }
 #song-table-container { display:none; max-height:250px; overflow-y:auto; background:#333; padding:10px; border-radius:5px; }
 table { width:100%; border-collapse:collapse; color:#fff; font-size:0.9rem; }
 th, td { padding:8px; border-bottom:1px solid #555; cursor:pointer; }
@@ -38,7 +38,7 @@ footer a { color:#00aaff; text-decoration:none; }
 <button class="btn" onclick="decreaseFont()">A-</button>
 </div>
 <div id="menu">
-<h2 onclick="toggleMenu()">Song List ▼</h2>
+<h3 onclick="toggleMenu()">Song List ▼</h3>
 <div id="song-table-container">
 <table id="song-table">
 <thead>
