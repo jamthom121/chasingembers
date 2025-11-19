@@ -5,224 +5,89 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Song Lyrics Viewer</title>
   <style>
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: #fafafa;
-    }
-
-    header {
-      background: #333;
-      color: #fff;
-      padding: 15px;
-      text-align: center;
-      font-size: 1.5rem;
-    }
-
-    #container {
-      display: flex;
-      flex-direction: column;
-      height: 100vh;
-    }
-
-    /* Collapsible Navigation Menu */
-    #menu {
-      background: #444;
-      color: #fff;
-      padding: 10px;
-    }
-
-    #menu h2 {
-      margin-top: 0;
-      cursor: pointer;
-    }
-
-    #song-table-container {
-      display: none;
-      max-height: 250px;
-      overflow-y: auto;
-      background: #333;
-      padding: 10px;
-      border-radius: 5px;
-    }
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      color: #fff;
-      font-size: 0.9rem;
-    }
-
-    th, td {
-      padding: 8px;
-      border-bottom: 1px solid #555;
-      cursor: pointer;
-    }
-
-    tr:hover td {
-      background: #555;
-    }
-
-    /* Lyrics Display */
-    #lyrics-container {
-      flex: 1;
-      overflow-y: auto;
-      padding: 20px;
-      font-size: 18px;
-      line-height: 1.5;
-      background: #fff;
-    }
-
-    /* Controls */
-    #controls {
-      display: flex;
-      justify-content: center;
-      gap: 10px;
-      padding: 10px;
-      background: #333;
-    }
-
-    .btn {
-      background: #00aaff;
-      color: white;
-      border: none;
-      padding: 6px 14px;
-      border-radius: 5px;
-      font-size: 14px;
-      cursor: pointer;
-    }
-
-    .btn:hover {
-      background: #0088cc;
-    }
-
-    /* Footer */
-    footer {
-      text-align: center;
-      padding: 10px;
-      background: #222;
-    }
-
-    footer a {
-      color: #00aaff;
-      text-decoration: none;
-    }
-
+    body { margin:0; font-family: Arial,sans-serif; background:#fafafa; }
+    header { background:#333;color:#fff;padding:15px;text-align:center;font-size:1.5rem; }
+    #container { display:flex;flex-direction:column;height:100vh; }
+    #menu { background:#444;color:#fff;padding:10px; }
+    #menu h2 { margin-top:0; cursor:pointer; }
+    #song-table-container { display:none; max-height:250px; overflow-y:auto; background:#333; padding:10px; border-radius:5px; }
+    table { width:100%; border-collapse:collapse; color:#fff; font-size:0.9rem; }
+    th, td { padding:8px; border-bottom:1px solid #555; cursor:pointer; }
+    tr:hover td { background:#555; }
+    #lyrics-container { flex:1; overflow-y:auto; padding:20px; font-size:18px; line-height:1.5; background:#fff; }
+    #controls { display:flex; justify-content:center; gap:10px; padding:10px; background:#333; }
+    .btn { background:#00aaff; color:white; border:none; padding:6px 14px; border-radius:5px; font-size:14px; cursor:pointer; }
+    .btn:hover { background:#0088cc; }
+    footer { text-align:center; padding:10px; background:#222; }
+    footer a { color:#00aaff; text-decoration:none; }
   </style>
 </head>
 <body>
-
-  <header>Song Lyrics Viewer</header>
-
-  <div id="container">
-    <!-- Song Navigation Menu -->
-    <div id="menu">
-      <h2 onclick="toggleMenu()">Song List ▼</h2>
-      <div id="song-table-container">
-        <table id="song-table">
-          <thead>
-            <tr>
-              <th onclick="sortTable(0)">SEQ</th>
-              <th onclick="sortTable(1)">Song Title</th>
-            </tr>
-          </thead>
-          <tbody id="song-tbody">
-            <tr onclick="loadLyrics('charts/song1.txt')"><td>1</td><td>Song 1</td></tr>
-            <tr onclick="loadLyrics('charts/song2.txt')"><td>2</td><td>Song 2</td></tr>
-            <tr onclick="loadLyrics('charts/song3.txt')"><td>3</td><td>Song 3</td></tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-
-    <!-- Lyrics View -->
-    <div id="lyrics-container">Select a song from the menu to view lyrics.</div>
-
-    <!-- Controls -->
-    <div id="controls">
-      <button class="btn" onclick="startScroll()">Start</button>
-      <button class="btn" onclick="stopScroll()">Stop</button>
-      <button class="btn" onclick="increaseSpeed()">Faster</button>
-      <button class="btn" onclick="decreaseSpeed()">Slower</button>
-      <button class="btn" onclick="increaseFont()">A+</button>
-      <button class="btn" onclick="decreaseFont()">A-</button>
+<header>Song Lyrics Viewer</header>
+<div id="container">
+  <div id="controls">
+    <button class="btn" onclick="startScroll()">Start</button>
+    <button class="btn" onclick="stopScroll()">Stop</button>
+    <button class="btn" onclick="increaseSpeed()">Faster</button>
+    <button class="btn" onclick="decreaseSpeed()">Slower</button>
+    <button class="btn" onclick="increaseFont()">A+</button>
+    <button class="btn" onclick="decreaseFont()">A-</button>
+  </div>
+  <div id="menu">
+    <h2 onclick="toggleMenu()">Song List ▼</h2>
+    <div id="song-table-container">
+      <table id="song-table">
+        <thead>
+          <tr>
+            <th onclick="sortTable(0,true)">SEQ</th>
+            <th onclick="sortTable(1,false)">Song Title</th>
+          </tr>
+        </thead>
+        <tbody id="song-tbody">
+          <tr onclick="loadLyrics('lyrics/TheStory.txt')"><td>1</td><td>Song 1</td></tr>
+          <tr onclick="loadLyrics('lyrics/TheStory.txt')"><td>2</td><td>Song 2</td></tr>
+          <tr onclick="loadLyrics('lyrics/TheStory.txt')"><td>3</td><td>Song 3</td></tr>
+        </tbody>
+      </table>
     </div>
   </div>
+  <div id="lyrics-container">Select a song from the menu to view lyrics.</div>
+</div>
+<footer>
+  <a href="https://chasingembers937.com/bs/index.html" target="_blank">Back to Chasing Embers</a>
+</footer>
+<script>
+let scrollInterval, scrollSpeed=200, fontSize=18;
+let sortAsc={0:true,1:true}; // track ascending/descending for each column
 
-  <footer>
-    <a href="https://chasingembers937.com/bs/index.html" target="_blank">Back to Chasing Embers</a>
-  </footer>
+function loadLyrics(file){
+  document.getElementById('song-table-container').style.display='none'; // auto collapse
+  fetch(file).then(r=>r.text()).then(t=>{
+    const el=document.getElementById('lyrics-container');
+    el.innerText=t; el.scrollTop=0;
+  }).catch(_=>document.getElementById('lyrics-container').innerText='Error loading lyrics.');
+}
+function startScroll(){stopScroll(); scrollInterval=setInterval(()=>document.getElementById('lyrics-container').scrollTop+=1,scrollSpeed);}
+function stopScroll(){clearInterval(scrollInterval);}
+function increaseSpeed(){if(scrollSpeed>10)scrollSpeed-=10;startScroll();}
+function decreaseSpeed(){scrollSpeed+=10;startScroll();}
+function increaseFont(){fontSize+=2; document.getElementById('lyrics-container').style.fontSize=fontSize+'px';}
+function decreaseFont(){fontSize=Math.max(10,fontSize-2); document.getElementById('lyrics-container').style.fontSize=fontSize+'px';}
+function toggleMenu(){const box=document.getElementById('song-table-container'); box.style.display=box.style.display==='none'?'block':'none';}
 
-  <script>
-    let scrollInterval;
-    let scrollSpeed = 115; // 50% slower than before
-    let fontSize = 18;
-
-    function loadLyrics(file) {
-      // Auto-collapse menu when a song is clicked
-      document.getElementById('song-table-container').style.display = 'none';
-      fetch(file)
-        .then(response => response.text())
-        .then(text => {
-          const el = document.getElementById('lyrics-container');
-          el.innerText = text;
-          el.scrollTop = 0;
-        })
-        .catch(err => {
-          document.getElementById('lyrics-container').innerText = "Error loading lyrics.";
-        });
-    }
-
-    function startScroll() {
-      stopScroll();
-      scrollInterval = setInterval(() => {
-        document.getElementById('lyrics-container').scrollTop += 1;
-      }, scrollSpeed);
-    }
-
-    function stopScroll() {
-      clearInterval(scrollInterval);
-    }
-
-    function increaseSpeed() {
-      if (scrollSpeed > 10) scrollSpeed -= 10;
-      startScroll();
-    }
-
-    function decreaseSpeed() {
-      scrollSpeed += 10;
-      startScroll();
-    }
-
-    function increaseFont() {
-      fontSize += 2;
-      document.getElementById('lyrics-container').style.fontSize = fontSize + 'px';
-    }
-
-    function decreaseFont() {
-      fontSize -= 2;
-      if (fontSize < 10) fontSize = 10;
-      document.getElementById('lyrics-container').style.fontSize = fontSize + 'px';
-    }
-
-    function toggleMenu() {
-      const box = document.getElementById('song-table-container');
-      box.style.display = box.style.display === 'none' ? 'block' : 'none';
-    }
-
-    function sortTable(colIndex) {
-      const tbody = document.getElementById('song-tbody');
-      const rows = Array.from(tbody.querySelectorAll('tr'));
-
-      rows.sort((a, b) => {
-        const A = a.children[colIndex].innerText;
-        const B = b.children[colIndex].innerText;
-        return colIndex === 0 ? Number(A) - Number(B) : A.localeCompare(B);
-      });
-
-      rows.forEach(r => tbody.appendChild(r));
-    }
-
-  </script>
+function sortTable(colIndex,isNumber){
+  const tbody=document.getElementById('song-tbody');
+  const rows=Array.from(tbody.querySelectorAll('tr'));
+  const asc=sortAsc[colIndex];
+  rows.sort((a,b)=>{
+    const A=a.children[colIndex].innerText;
+    const B=b.children[colIndex].innerText;
+    if(isNumber) return asc?Number(A)-Number(B):Number(B)-Number(A);
+    return asc?A.localeCompare(B):B.localeCompare(A);
+  });
+  rows.forEach(r=>tbody.appendChild(r));
+  sortAsc[colIndex]=!asc;
+}
+</script>
 </body>
 </html>
