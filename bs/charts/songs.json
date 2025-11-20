@@ -508,5 +508,15 @@
     "midiid": "",
     "backingtrack": "https://chasingembers937.com/bs/charts/backing/54.mp3",
     "notes": ""
+  },
+    {
+    "seq": 99,
+    "title": "I Love You",
+    "artist": "Billie Eilish",
+    "lyricsfile": "charts/I_Love_You_lyrics.txt",
+    "chordsfile": "charts/I_Love_You_chords.txt",
+    "midiid": "",
+    "backingtrack": "https://chasingembers937.com/bs/charts/backing/99.mp3",
+    "notes": ""
   }
 ]
