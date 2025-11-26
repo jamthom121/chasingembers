@@ -455,21 +455,27 @@
   <h2>Media</h2>
   <p>Here are some clips from the studio. Enjoy!</p>
 
+    <div class="video-box">
+      <iframe id="video1" width="560" height="315" src="https://www.youtube.com/embed/3PuVWGSy4mA?si=4rsKSRf-eM8dobQ8" 
+        title="YouTube video player" frameborder="0" allowfullscreen>
+    </iframe>
+    </div>
+
   <div class="video-box">
-    <iframe id="video1" width="560" height="315"
+    <iframe id="video2" width="560" height="315"
       src="https://www.youtube.com/embed/c84Ab3p_AJg?enablejsapi=1&start=5&rel=0&modestbranding=1"
       title="YouTube video player" frameborder="0" allowfullscreen>
     </iframe>
   </div>
 
   <div class="video-box">
-    <iframe id="video2" width="560" height="315"
+    <iframe id="video3" width="560" height="315"
       src="https://www.youtube.com/embed/7runIsg_j7c?enablejsapi=1&rel=0&modestbranding=1"
       title="YouTube video player" frameborder="0" allowfullscreen>
     </iframe>
   </div>
   <div class="video-box">
-    <iframe id="video3" width="560" height="315"
+    <iframe id="video4" width="560" height="315"
     src="https://www.youtube.com/embed/0gUhA_94wag?enablejsapi=1&si=jvfic15H1tuR365k&rel=0&modestbranding=1"
     title="YouTube video player" frameborder="0"
     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
@@ -569,6 +575,7 @@
     players.video1 = new YT.Player('video1', { events: { 'onStateChange': onPlayerStateChange } });
     players.video2 = new YT.Player('video2', { events: { 'onStateChange': onPlayerStateChange } });
     players.video3 = new YT.Player('video3', { events: { 'onStateChange': onPlayerStateChange } });
+    players.video4 = new YT.Player('video3', { events: { 'onStateChange': onPlayerStateChange } });
   }
 
   function onPlayerStateChange(event) {
